@@ -11,7 +11,7 @@ COPY pyproject.toml .
 RUN uv sync --no-dev
 
 COPY app ./app
-COPY model ./model
+# COPY model ./model
 
 ENV HOST=0.0.0.0
 ENV PORT=8000

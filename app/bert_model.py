@@ -3,17 +3,17 @@ import keras_nlp
 
 SEQUENCE_LENGTH = 128
 
-def load_model(model_path: str):
-    print(f"Chargement du modèle depuis : {model_path}")
-
-    model = tf.keras.models.load_model(
-        model_path,
-        custom_objects={
-            "DistilBertBackbone": keras_nlp.models.DistilBertBackbone,
-            "DistilBertTokenizer": keras_nlp.models.DistilBertTokenizer,
-            "DistilBertPreprocessor": keras_nlp.models.DistilBertPreprocessor
-        }
-    )
+def load_model(model_path):
+    with tf.device("/CPU:0"):
+        model = tf.keras.models.load_model(model_path, compile=False)
+    # model = tf.keras.models.load_model(
+    #     model_path,
+    #     custom_objects={
+    #         "DistilBertBackbone": keras_nlp.models.DistilBertBackbone,
+    #         "DistilBertTokenizer": keras_nlp.models.DistilBertTokenizer,
+    #         "DistilBertPreprocessor": keras_nlp.models.DistilBertPreprocessor
+    #     }
+    # )
     print("Modèle chargé avec succès.")
 
     preprocessor = keras_nlp.models.DistilBertPreprocessor.from_preset(
