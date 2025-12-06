@@ -2,10 +2,20 @@ from .schemas import SentimentRequest, SentimentPrediction
 import numpy as np
 from fastapi import FastAPI, HTTPException
 import os
+import requests
 from .bert_model import load_model, predict
 
-app = FastAPI()
 model_path = "model/distilbert_model.keras"
+os.makedirs("model", exist_ok=True)
+
+if not os.path.exists(model_path):
+    print("Téléchargement du modèle depuis GitHub...")
+    url = "https://github.com/FrConsDev/alma/raw/main/model/distilbert_model.keras"
+    r = requests.get(url)
+    with open(model_path, "wb") as f:
+        f.write(r.content)
+
+app = FastAPI()
 
 model, preprocessor = load_model(model_path)
 
